@@ -63,7 +63,6 @@ export default function AddRecipeForm() {
             })
             const file = await response.json()
             setImage(file.secure_url)
-            console.log('file subido',file)
         } catch (error) {
             console.log('error subiendo la imagen',error)
         }
@@ -135,7 +134,7 @@ export default function AddRecipeForm() {
             {stepFields.map((field, index) => (
                 <div key={field.id} className="flex items-center gap-2 mb-2">
                     <input type="text"
-                        {...register(`steps.${index}`, {required:true})}
+                        {...register(`steps.${index}.step`, {required:true})}
                         placeholder={`Paso ${index + 1}`}
                         className="p-2 border rounded-lg w-full"
                     />
@@ -154,7 +153,7 @@ export default function AddRecipeForm() {
             {/* --- INGREDIENTES --- */}
             <label>Ingredientes a usar:</label>
             {ingredientFields.map((field, index) => (
-                <div key={field.name} className="flex items-center gap-2 mb-2">
+                <div key={field.id} className="flex items-center gap-2 mb-2">
                     <input
                         {...register(`ingredients.${index}.name`, { required: true })}
                         placeholder="Ej: Papa"

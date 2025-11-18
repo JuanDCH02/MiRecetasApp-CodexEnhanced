@@ -26,7 +26,7 @@ export const RecipeDetailView = () => {
                     capitalize">
                         {data.title}
                     </h1>
-                    <img src='/pasta.webp' alt="imagen-referencia" 
+                    <img src={data.image} alt="imagen-referencia" 
                         className="w-1/2 mx-auto shadow"
                     />
                     
@@ -41,13 +41,14 @@ export const RecipeDetailView = () => {
                             {data.steps.map(({step}, index) => (
                                 
                                 <li key={index}
-                                    className="text-xl font-bold text-gray-500"
+                                    className="text-xl font-bold text-gray-600"
                                     >{index+1}. {step}
                                 </li>
                             ))}
                         </ol>
-                        <Link to={`/recipes/${recipeId}/add-comment`} className="p-2 py-1.5 px-2 rounded hover:cursor-pointer hover:text-white hover:bg-gray-500 
-                            transition-all "
+                        <Link to={`/recipes/${recipeId}/add-comment`} 
+                            className="p-2 rounded-md hover:cursor-pointer hover:text-white hover:bg-gray-500 
+                            border border-gray-400 transition-all "
                             >agregar comentario
                         </Link >
                     </div>

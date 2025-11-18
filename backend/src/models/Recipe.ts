@@ -11,7 +11,7 @@ export interface IRecipe extends Document {
     likesCount: number
     isLiked:boolean
     ingredients: { name: string; amount: number; unit: string }[]
-    steps: string[]
+    steps: { step: string }[]
     image: string
     comments: PopulatedDoc<IComment & Document>[]
     author: Types.ObjectId | IUser;
@@ -25,7 +25,7 @@ const RecipeSchema = new Schema({
     likesCount: { type: Number, default:0 },
     isLiked: { type: Boolean, default:false},
     ingredients: [{ name: String, amount: Number, unit: String }],
-    steps: [{ type: String, required: true}],
+    steps: [{ type: Object, required: true}],
     image: { type: String, required: true },
     comments: [{ type: Types.ObjectId, ref: 'Comment' }],
     author: { type: Types.ObjectId, ref: 'User' },
