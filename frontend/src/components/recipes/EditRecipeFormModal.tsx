@@ -69,7 +69,8 @@ export default function EditRecipeFormModal() {
     const {mutate} = useMutation({
         mutationFn: updateRecipe,
         onError(error) {
-            toast.error(error.message);
+            toast.error(error.message)
+            console.log('error actualizando receta', error)
         },
         onSuccess(data){
             toast.success(data)
@@ -137,7 +138,7 @@ export default function EditRecipeFormModal() {
                         {stepFields.map((field, index) => (
                             <div key={field.id} className="flex items-center gap-2 mb-2">
                                 <input type="text"
-                                    {...register(`steps.${index}`, {required:true})}
+                                    {...register(`steps.${index}.step`, {required:true})}
                                     placeholder={`Paso ${index + 1}`}
                                     className="p-2 border rounded-lg w-full"
                                 />

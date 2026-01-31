@@ -32,7 +32,7 @@ export const RecipeCard = ({recipe} : RecipeCardProps) => {
     
     return (
         
-        <div className="bg-white border border-gray-300 p-4 w-72 h-[410px] mb-3 rounded shadow space-y-3 
+        <div className="bg-white border border-gray-300 p-4 w-72 h-[410px] mb-3 rounded-lg shadow space-y-3 
         hover:scale-102 hover:transition-all hover:bg-indigo-100 hover:shadow-lg">
             
 

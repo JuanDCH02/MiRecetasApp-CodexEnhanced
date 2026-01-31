@@ -16,12 +16,20 @@ export const AppLayout = () => {
                     </Link>
                 </div>
 
-                <div>
-                    <Link
-                        to={`${user? '/auth/login' : '/auth/create-account'}`}
-                        className="py-2 px-5 bg-indigo-500 text-white font-semibold rounded hover:bg-indigo-600 cursor-pointer"
-                        >{`${user? 'Login' : 'Crear Cuenta'}`}
-                    </Link>
+                <div className="flex gap-4">
+                    {!user && (
+                        <>
+                        <Link to={ '/auth/login'}
+                            className="py-2 px-5 bg-indigo-500 text-white font-semibold rounded hover:bg-indigo-600 cursor-pointer"
+                            >Login
+                        </Link>
+                        <Link to={'/auth/create-account'}
+                            className="py-2 px-5 bg-indigo-500 text-white font-semibold rounded hover:bg-indigo-600 cursor-pointer"
+                            >Crear Cuenta
+                        </Link>
+                        </>
+                    )}
+                    
                 </div>
             </header>
 
