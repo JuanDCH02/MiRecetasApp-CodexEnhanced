@@ -1,18 +1,20 @@
-import { isAxiosError } from "axios";
-import { api } from "../lib";
-import { type Recipe } from "../types";
+﻿import { isAxiosError } from 'axios';
+import { api } from '../lib';
+import { type Recipe } from '../types';
 
-export const createComment = async(id: Recipe['_id'], content: string)=> {
-    const token = localStorage.getItem('autenticationToken')
-
-    try {
-        const {data} = await api.post<string>(`/recipes/${id}/comment`,{content}
-            , { headers: { Authorization: `Bearer ${token}`} })
-        return data
-        
-    } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error || 'Error al crear el comentario')
-        }
+const getApiErrorMessage = (error: unknown, fallbackMessage: string) => {
+    if (isAxiosError(error) && error.response?.data?.error) {
+        return error.response.data.error as string;
     }
-}
+
+    return fallbackMessage;
+};
+
+export const createComment = async (id: Recipe['_id'], content: string) => {
+    try {
+        const { data } = await api.post<string>(`/recipes/${id}/comment`, { content });
+        return data;
+    } catch (error) {
+        throw new Error(getApiErrorMessage(error, 'Error al crear el comentario'));
+    }
+};

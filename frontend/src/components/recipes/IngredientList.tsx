@@ -1,25 +1,20 @@
-import type { Recipe } from "../../types"
+﻿import type { Recipe } from '../../types';
 
+type IngredientListProps = {
+    ingredients: Recipe['ingredients'];
+};
 
-type CommentListProps = {
-    ingredients: Recipe['ingredients']
-}
-
-export const IngredientList = ({ingredients} : CommentListProps) => {
-
+export const IngredientList = ({ ingredients }: IngredientListProps) => {
     return (
-        <aside className="md:w-72 border-l border-l-gray-300">
-            <div className="space-y-2" >
-                <h3 className="text-center text-xl my-5 p-2 font-bold ">
-                    Lista de Ingredientes
-                </h3>
-                {ingredients.map(ing =>(
-
-                    <p key={ing.name} className="border-b border-b-gray-400 last:border-b-0 text-center text-lg font-bold text-gray-600"
-                        >{ing.name} {ing.amount} {ing.unit}
+        <aside className="lg:w-80 bg-white/70 border-t lg:border-t-0 lg:border-l border-teal-100 p-6">
+            <h3 className="text-2xl my-2 font-black text-teal-900">Ingredientes</h3>
+            <div className="space-y-2 mt-4">
+                {ingredients.map((ingredient, index) => (
+                    <p key={`${ingredient.name}-${index}`} className="text-teal-800 font-semibold bg-teal-50 rounded-lg px-3 py-2 border border-teal-100">
+                        {ingredient.name} - {ingredient.amount} {ingredient.unit}
                     </p>
-                )) }
+                ))}
             </div>
         </aside>
-    )
-}
+    );
+};

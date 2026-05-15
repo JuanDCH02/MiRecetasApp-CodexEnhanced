@@ -97,7 +97,7 @@ export default function AddRecipeForm() {
             {/* --- CAMPOS BÁSICOS --- */}
             <label>Nombre de la receta:</label>
             <input type="text" {...register("title", { required: true })}
-                className="p-2 border rounded-lg w-full"
+                className="p-2 border rounded-lg w-full bg-white"
             />
             {errors.title && <span className="text-red-500">Este campo es obligatorio</span>}
 
@@ -105,13 +105,13 @@ export default function AddRecipeForm() {
                 <div>
                     <label>Tiempo de preparación:</label>
                     <input type="number" {...register("cookTime", { required: true })}
-                        className="p-2 border rounded-lg block w-full"
+                        className="p-2 border rounded-lg block w-full bg-white"
                     />
                 </div>
                 <div>
                     <label>Porciones:</label>
                     <input type="number" {...register("portions")}
-                        className="p-2 border rounded-lg block w-full"
+                        className="p-2 border rounded-lg block w-full bg-white"
                     />
                 </div>
             </div>
@@ -136,7 +136,7 @@ export default function AddRecipeForm() {
                     <input type="text"
                         {...register(`steps.${index}.step`, {required:true})}
                         placeholder={`Paso ${index + 1}`}
-                        className="p-2 border rounded-lg w-full"
+                        className="p-2 border rounded-lg w-full bg-white"
                     />
                     <button type="button"
                         onClick={()=> removeStep(index)}
@@ -157,15 +157,15 @@ export default function AddRecipeForm() {
                     <input
                         {...register(`ingredients.${index}.name`, { required: true })}
                         placeholder="Ej: Papa"
-                        className="border p-2 rounded w-1/2"
+                        className="border p-2 rounded w-1/2 bg-white"
                     />
                     <input
                         type="number"
                         {...register(`ingredients.${index}.amount`, { valueAsNumber: true })}
                         placeholder="200"
-                        className="border p-2 rounded w-24"
+                        className="border p-2 rounded w-24 bg-white"
                     />
-                    <select {...register(`ingredients.${index}.unit`)} className="border p-2 rounded">
+                    <select {...register(`ingredients.${index}.unit`)} className="border p-2 rounded bg-white">
                         <option value="gr">gr</option>
                         <option value="ml">ml</option>
                         <option value="unidad">unidad</option>
@@ -188,7 +188,7 @@ export default function AddRecipeForm() {
             <div>
                 <input type="file" accept="image/*" onChange={handleFileChange}
                     placeholder="Sube la imagen de tu receta"
-                    className="p-2 border rounded-lg md:w-1/2 "
+                    className="p-2 border rounded-lg md:w-1/2 bg-white"
                 />
                 {image? <img src={image} alt="imagen subida" className="mt-4 max-h-48 rounded-lg"/> : ''}
             </div>

@@ -1,126 +1,92 @@
-import { isAxiosError } from "axios";
-import { api } from "../lib";
-import { DashboardRecipeSchema, RecipeSchema, type CreateRecipeFormValues, type Recipe } from "../types";
+﻿import { isAxiosError } from 'axios';
+import { api } from '../lib';
+import { DashboardRecipeSchema, RecipeSchema, type CreateRecipeFormValues, type Recipe } from '../types';
 
-
-
-export const getRecipes = async() => {
-    try {
-        const {data} = await api('/recipes/')
-        const res = DashboardRecipeSchema.safeParse(data)
-        if(res.success) return res.data
-        
-    } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
+const getApiErrorMessage = (error: unknown, fallbackMessage: string) => {
+    if (isAxiosError(error) && error.response?.data?.error) {
+        return error.response.data.error as string;
     }
-}
 
-export const getRecipeById = async(id : Recipe['_id']) => {
-    try {
-        const {data} = await api(`/recipes/${id}`)
-        const res = RecipeSchema.safeParse(data)
-        if(res.success) return res.data
-        
-    } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
-    }
-}
+    return fallbackMessage;
+};
 
-export const getUserRecipes = async() => {
-    const token = localStorage.getItem('autenticationToken')
+export const getRecipes = async () => {
     try {
-        const {data} = await api(`/recipes/my-recipes`, {
-            headers: { Authorization: `Bearer ${token}`}
-        })
-        const res = DashboardRecipeSchema.safeParse(data)
-        if(res.success) return res.data
-        
+        const { data } = await api('/recipes/');
+        const parsed = DashboardRecipeSchema.safeParse(data);
+        return parsed.success ? parsed.data : [];
     } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
+        throw new Error(getApiErrorMessage(error, 'No se pudieron obtener las recetas'));
     }
-}
+};
 
-export const getUserFavorites = async() => {
-    const token = localStorage.getItem('autenticationToken')
+export const getRecipeById = async (id: Recipe['_id']) => {
     try {
-        
-        const {data} = await api(`/recipes/favorites`, {
-            headers: { Authorization: `Bearer ${token}`}
-        })
-        const res = DashboardRecipeSchema.safeParse(data)
-        if(res.success) return res.data
-        
-    } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
-    }
-}
+        const { data } = await api(`/recipes/${id}`);
+        const parsed = RecipeSchema.safeParse(data);
 
-export const toggleFavorites = async(id: Recipe['_id']) => {
-    const token = localStorage.getItem('autenticationToken')
-    try {
-        
-        const {data} = await api.post<{message:string, likesCount:number}>(`/recipes/${id}/favorite`,
-            {}, {
-                headers: { Authorization: `Bearer ${token}`}
-            })
-        return data
-        
-    } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
+        if (!parsed.success) {
+            throw new Error('Formato de receta inválido');
         }
-    }
-}
 
-export const createRecipe = async(formData : CreateRecipeFormValues) => {
-    const token = localStorage.getItem('autenticationToken')
-    try {
-        const {data} = await api.post<string>(`/recipes`, formData, {
-            headers: { Authorization: `Bearer ${token}`}
-        })
-        return data
-        
+        return parsed.data;
     } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
+        throw new Error(getApiErrorMessage(error, 'No se pudo obtener la receta'));
     }
-}
+};
 
-export const updateRecipe = async({formData, id}:{formData: CreateRecipeFormValues,id: Recipe['_id']}) => {
-    const token = localStorage.getItem('autenticationToken')
+export const getUserRecipes = async () => {
     try {
-        const {data} = await api.put<string>(`/recipes/${id}`, formData, {
-            headers: { Authorization: `Bearer ${token}`}
-        })
-        return data
-        
+        const { data } = await api('/recipes/my-recipes');
+        const parsed = DashboardRecipeSchema.safeParse(data);
+        return parsed.success ? parsed.data : [];
     } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
+        throw new Error(getApiErrorMessage(error, 'No se pudieron obtener tus recetas'));
     }
-}
+};
 
-export const deleteRecipe = async(id: Recipe['_id']) => {
-    const token = localStorage.getItem('autenticationToken')
+export const getUserFavorites = async () => {
     try {
-        const {data} = await api.delete<string>(`/recipes/${id}`, {
-            headers: { Authorization: `Bearer ${token}`}
-        })
-        return data
-        
+        const { data } = await api('/recipes/favorites');
+        const parsed = DashboardRecipeSchema.safeParse(data);
+        return parsed.success ? parsed.data : [];
     } catch (error) {
-        if(isAxiosError(error) && error.response){
-            throw new Error(error.response.data.error)
-        }
+        throw new Error(getApiErrorMessage(error, 'No se pudieron obtener tus favoritos'));
     }
-}
+};
+
+export const toggleFavorites = async (id: Recipe['_id']) => {
+    try {
+        const { data } = await api.post<{ message: string; likesCount: number }>(`/recipes/${id}/favorite`, {});
+        return data;
+    } catch (error) {
+        throw new Error(getApiErrorMessage(error, 'No se pudo actualizar favorito'));
+    }
+};
+
+export const createRecipe = async (formData: CreateRecipeFormValues) => {
+    try {
+        const { data } = await api.post<string>('/recipes', formData);
+        return data;
+    } catch (error) {
+        throw new Error(getApiErrorMessage(error, 'No se pudo crear la receta'));
+    }
+};
+
+export const updateRecipe = async ({ formData, id }: { formData: CreateRecipeFormValues; id: Recipe['_id'] }) => {
+    try {
+        const { data } = await api.put<string>(`/recipes/${id}`, formData);
+        return data;
+    } catch (error) {
+        throw new Error(getApiErrorMessage(error, 'No se pudo actualizar la receta'));
+    }
+};
+
+export const deleteRecipe = async (id: Recipe['_id']) => {
+    try {
+        const { data } = await api.delete<string>(`/recipes/${id}`);
+        return data;
+    } catch (error) {
+        throw new Error(getApiErrorMessage(error, 'No se pudo eliminar la receta'));
+    }
+};

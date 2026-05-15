@@ -5,7 +5,7 @@ export interface IUser extends Document {
     name: string
     email: string
     password: string
-    favorites: string[]
+    favorites: Types.ObjectId[]
 }
 
 const UserSchema = new Schema({
